@@ -13,3 +13,21 @@ figlet ('Employee Tracker', function(err, data){
     } 
     console.log(chalk.cyan(data))
 });
+
+// Valdiation functions
+const validateName = answer => {
+    const pass = answer.match(/^[a-z][a-z\s]*$/);
+    if (pass) {
+        return true;
+    }
+    return (chalk.redBright("Enter valid name"));
+};
+
+const validateNum = answer => {
+    const pass = answer.match('^[0-9]+$');
+    if (pass) {
+        return true;
+    }
+    return (chalk.redBright("Must be a number"));
+};
+
