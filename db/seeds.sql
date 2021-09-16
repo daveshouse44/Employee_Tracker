@@ -20,15 +20,17 @@ VALUES  ('Senior Engineer', 125000, 1),
 
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES  ('Arthur', 'Dent', 1, null),
-        ('Ford', 'Prefect', 2, null),
-        ('Zaphod', 'Beeblebrox', 3, 1),
-        ('Marvin', 'Paranoid-Android', 4, 2),
-        ('Trillian', 'McMillan', 5, null),
-        ('Slarti', 'Bartfast', 6, null),
-        ('Agra', 'Jag', 7, 3),
-        ('Alice', 'Beeblebrox', 8, null),
-        ('Allit', 'Nils', 9, null),
-        ('Anjie', 'Aseed', 10, 4),
-        ('Dan', 'Streetmentioner', 11, null),
-        ('Enid', 'Kapelsen', 12, null);
+VALUES  ('Arthur', 'Dent', 1, 1),
+        ('Ford', 'Prefect', 2, 1),
+        ('Zaphod', 'Beeblebrox', 3, null),
+        ('Marvin', 'Paranoid-Android', 4, null),
+        ('Trillian', 'McMillan', 5, 2),
+        ('Slarti', 'Bartfast', 6, 2),
+        ('Agra', 'Jag', 7, null),
+        ('Alice', 'Beeblebrox', 8, 3),
+        ('Allit', 'Nils', 9, 3),
+        ('Anjie', 'Aseed', 10, null),
+        ('Dan', 'Streetmentioner', 11, 4),
+        ('Enid', 'Kapelsen', 12, 4);
+
+SELECT employees.id AS 'ID#', CONCAT(employees.first_name, ' ', employees.last_name) AS 'Employees', title AS 'Title', salary AS 'Salary', departments.name AS 'Department', CONCAT(e.first_name, ' ', e.last_name) AS 'Manager' FROM roles LEFT JOIN employees ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id LEFT JOIN employees e ON employees.manager_id = e.id;
