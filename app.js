@@ -156,29 +156,44 @@ function viewDepartments() {
 // Creating array for role query in Add Employee Prompt
 var roleArr = [];
 function chooseRole() {
-  db.query("SELECT * FROM roles", function(err, res) {
-    if (err) throw err
+  db.query("SELECT * FROM roles", function (err, res) {
+    if (err) throw err;
     for (var i = 0; i < res.length; i++) {
       roleArr.push(res[i].title);
     }
-
-  })
+  });
   return roleArr;
 }
 
+// Create array for manager query in Add Employee Promtpt
 var managerArr = [];
 function chooseManager() {
-  db.query("SELECT first_name, last_name FROM employees WHERE manager_id IS NULL", function(err, res) {
-    if (err) throw err
-    for (var i = 0; i < res.length; i++) {
-      managerArr.push(res[i].first_name);
+  db.query(
+    "SELECT CONCAT(employees.first_name, ' ', employees.last_name) AS 'Manager' FROM employees WHERE manager_id IS NULL",
+    function (err, res) {
+      if (err) throw err;
+      for (var i = 0; i < res.length; i++) {
+        managerArr.push(res[i].Manager);
+      }
     }
-
-  })
+  );
   return managerArr;
 }
 
-// Add functions
+// Create array for department query in Add Role Prompt
+var departmentArr = [];
+function chooseDepartment() {
+  db.query("SELECT name FROM departments", function (err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      departmentArr.push(res[i].name);
+    }
+  });
+  return departmentArr;
+  console.log(departmentArr);
+}
+
+// Add functions to inquiry
 function addEmployee() {
   inquirer
     .prompt([
@@ -220,14 +235,83 @@ function addEmployee() {
         },
         function (err) {
           if (err) throw err;
-          console.log(chalk.redBright.bold(err));
+          console.log(
+            chalk.yellowBright.bold("Employee was added to database")
+          );
           console.table(val);
           init();
         }
       );
     });
-}  // Everything is working though here
+}
 
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: chalk.green("Enter name for new role"),
+        validate: validateName,
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: chalk.green("Enter the salary for new role"),
+        validate: validateNum,
+      },
+      {
+        type: "list",
+        name: "department",
+        message: chalk.green("Enter department this role serves"),
+        choices: chooseDepartment(),
+      },
+    ])
+    .then(function (val) {
+      var deptId = chooseDepartment().indexOf(val.department) + 1;
+      db.query(
+        "INSERT INTO roles SET ?",
+        {
+          title: val.title,
+          salary: val.salary,
+          department_id: deptId,
+        },
+        function (err) {
+          if (err) throw err;
+          console.log(
+            chalk.yellowBright.bold("New Role was added to database")
+          );
+          console.table(val);
+          init();
+        }
+      );
+    });
+}
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: chalk.green("Add Department to Roster Database"),
+        validate: validateName,
+      },
+    ])
+    .then(function (res) {
+      db.query(
+        "INSERT INTO departments SET ?",
+        {
+          name: res.name,
+        },
+        function (err) {
+          if (err) throw err;
+          console.table(res);
+          init();
+        }
+      );
+    });
+} // Everything is working-ish though here
 
 // function viewEmpsManager() {
 //     inquirer
@@ -247,5 +331,3 @@ function addEmployee() {
 //       }
 //     );
 //   }
-
-
