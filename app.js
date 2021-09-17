@@ -190,7 +190,6 @@ function chooseDepartment() {
     }
   });
   return departmentArr;
-  console.log(departmentArr);
 }
 
 // Add functions to inquiry
@@ -312,6 +311,54 @@ function addDepartment() {
       );
     });
 } // Everything is working-ish though here
+
+// Function to Update Roll using query in the function
+function updateRole() {
+  db.query(
+    "SELECT CONCAT(employees.first_name, ' ', employees.last_name) AS Employee FROM employees JOIN roles ON employees.role_id = roles.id;",
+    function (err, res) {
+      if (err) throw err;
+      //console.log(res)
+      inquirer.prompt([
+        {
+          type: "list",
+          name: "employee",
+          message: chalk.green("Select the employee to update role"),
+          choices: function () {
+            var employee = [];
+            for (var i = 0; i < res.length; i++) {
+              employee.push(res[i].Employee);
+            }
+            return employee;
+          },
+        },
+        {
+          type: "list",
+          name: "role",
+          message: chalk.green("Select the new role for employee"),
+          choices: chooseRole()
+        },
+      ]);
+    }
+  ).then(function (res) {
+    console.log(res);
+    var roleId = chooseRole().indexOf(res.role) + 1;
+    db.query(
+      "UPDATE employees SET WHERE ?",
+      {
+        Employee: res.employee,
+      },
+      {
+        role_id: roleId,
+      },
+      function (err) {
+        if (err) throw err;
+        console.table(res);
+        init();
+      }
+    );
+  });
+}
 
 // function viewEmpsManager() {
 //     inquirer
