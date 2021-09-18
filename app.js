@@ -315,7 +315,7 @@ function addDepartment() {
 // Function to Update Roll using query in the function
 function updateRole() {
   db.query(
-    "SELECT CONCAT(employees.first_name, ' ', employees.last_name) AS Employee FROM employees JOIN roles ON employees.role_id = roles.id;",
+    "SELECT CONCAT(employees.id, ':', employees.first_name, ' ', employees.last_name) AS Employee FROM employees JOIN roles ON employees.role_id = roles.id;",
     function (err, res) {
       if (err) throw err;
       //console.log(res);
@@ -340,18 +340,14 @@ function updateRole() {
             choices: chooseRole(),
           },
         ])
-        .then(function (res) {
-          console.log(res);
-          var roleId = chooseRole().indexOf(res.role) + 1;
+        .then(function (updateRes) {
+          console.log(updateRes);
+          var roleId = chooseRole().indexOf(updateRes.role) + 1;
           console.log(roleId);
+          var employeeId = updateRes.employee.split(":")[0]
           db.query(
-            "UPDATE Employee SET WHERE ? ?",
-            {
-              Employee: res.employee,
-            },
-            {
-              role_id: roleId,
-            },
+            "UPDATE employees SET role_id = ? WHERE id = ?",
+            [roleId ,employeeId],
             function (err) {
               if (err) throw err;
               console.table(res);
