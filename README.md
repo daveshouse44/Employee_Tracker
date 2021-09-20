@@ -125,4 +125,4 @@ Trilogy Education Services
 
 * [LinkedIn](https://www.linkedin.com/in/david-tierney-652030214/)
 
-* [Email](daveshouse44@hotmail.com)
+* [Email](mailto:daveshouse44@hotmail.com)
