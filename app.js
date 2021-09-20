@@ -48,12 +48,12 @@ function init() {
         "View All Departments",
         "Add a Department",
         "View Employees by Manager",
+        "View Department Budget",
         "View Employees by Department",
-        "Delete Employee",
+        /*        "Delete Employee",
         "Delete Role",
         "Delete Department",
-        "View Department Budget",
-        "Update Employee Managers",
+        "Update Employee Managers",*/
         "Quit",
       ],
     })
@@ -83,10 +83,13 @@ function init() {
         case "View Employees by Manager":
           viewEmpsManager();
           break;
+        case "View Department Budget":
+          viewDeptBudget();
+          break;
         case "View Employees by Department":
           viewEmpsDepartment();
           break;
-        case "Delete Employee":
+        /*        case "Delete Employee":
           deleteEmployee();
           break;
         case "Delete Role":
@@ -95,10 +98,9 @@ function init() {
         case "Delete Department":
           deleteDepartment();
           break;
-        case "View Department Budget":
-          deptBudget();
         case "Update Employee Managers":
           updateEmpsManager();
+          break;*/
         case "Quit":
           exit();
           break;
@@ -293,7 +295,7 @@ function addDepartment() {
       {
         type: "input",
         name: "name",
-        message: chalk.green("Add Department to Roster Database"),
+        message: chalk.green("Department Name to Add to Roster Database"),
         validate: validateName,
       },
     ])
@@ -305,6 +307,9 @@ function addDepartment() {
         },
         function (err) {
           if (err) throw err;
+          console.log(
+            chalk.yellowBright.bold("New Department was added to database")
+          );
           console.table(res);
           init();
         }
@@ -344,10 +349,10 @@ function updateRole() {
           console.log(updateRes);
           var roleId = chooseRole().indexOf(updateRes.role) + 1;
           console.log(roleId);
-          var employeeId = updateRes.employee.split(":")[0]
+          var employeeId = updateRes.employee.split(":")[0];
           db.query(
             "UPDATE employees SET role_id = ? WHERE id = ?",
-            [roleId ,employeeId],
+            [roleId, employeeId],
             function (err) {
               if (err) throw err;
               console.table(res);
@@ -359,21 +364,44 @@ function updateRole() {
   );
 }
 
-// function viewEmpsManager() {
-//     inquirer
-//     .prompt({
-//         type: "list",
-//         name: "availManagers",
-//         message: "Select a manager to view assigned employees"
-//     })
-//     db.query(
-//       "SELECT departments.id AS 'ID#', departments.name AS 'Deparmtent' FROM departments",
-//       function (err, results) {
-//         if (err) {
-//           console.log(chalk.redBright.bold(err));
-//         }
-//         console.table(results);
-//         init();
-//       }
-//     );
-//   }
+// Additional functions to view Employees
+function viewEmpsDepartment() {
+  db.query(
+    "SELECT departments.name AS Deparmtent, CONCAT(employees.first_name, ' ', employees.last_name) AS Employee FROM employees JOIN roles ON employees.role_id = roles.id JOIN departments ON departments.id = roles.department_id",
+    function (err, results) {
+      if (err) {
+        console.log(chalk.redBright.bold(err));
+      }
+      console.table(results);
+      init();
+    }
+  );
+}
+
+// This works but maybe not the intended way
+function viewEmpsManager() {
+  db.query(
+    "SELECT CONCAT(employees.first_name, ' ', employees.last_name) AS Employees, CONCAT(e.first_name, ' ', e.last_name) AS 'Manager' FROM roles LEFT JOIN employees ON employees.role_id = roles.id JOIN departments ON roles.department_id = departments.id LEFT JOIN employees e ON employees.manager_id = e.id WHERE employees.manager_id IS NOT NULL",
+    function (err, results) {
+      if (err) {
+        console.log(chalk.redBright.bold(err));
+      }
+      console.table(results);
+      init();
+    }
+  );
+}
+
+// Function to view each department budget
+function viewDeptBudget (){
+  db.query(
+    "SELECT departments.id, departments.name AS Department, SUM(roles.salary) AS Budget FROM departments LEFT JOIN roles ON roles.department_id = departments.id LEFT JOIN employees ON employees.role_id = roles.id GROUP BY departments.id",
+    function (err, results) {
+      if (err) {
+        console.log(chalk.redBright.bold(err));
+      }
+      console.table(results);
+      init();
+    }
+  );
+}
