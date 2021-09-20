@@ -1,12 +1,32 @@
 # Employee Tracker
 
+## Table of Contents:
+
+-[Description](#description)
+
+-[User-Story](#user-story)
+
+-[Installation](#installation)
+
+-[Mock-Up](#mock-up)
+
+-[Walkthrough-Video](#walkthrough-video)
+
+-[Technologies-Used](#technologies-used)
+
+-[Contributions](#contributions)
+
+-[Credits](#credits)
+
+-[Contact](#contact)
+
 
 ## Description:
 
 This command-line application allows users to manage a company's employee database with simple instructions, prompts and inputs.
 
 
-## User Story:
+## User-Story:
 
 ```md
 AS A business owner
@@ -69,12 +89,12 @@ As the image illustrates, the three tables were used to generate all data:
 
 
 
-### Walkthrough Video:
+### Walkthrough-Video:
 
-[Click here to view App Walkthrough]()
+[Click here to view App Walkthrough](https://drive.google.com/file/d/1FRdsB3RrgXiadhiNm1VavnWfQ3rLb4op/view)
 
 
-### Technologies Used:
+### Technologies-Used:
 
 * Satisfies all of the preceding acceptance criteria plus the following:
 
@@ -101,8 +121,8 @@ Trilogy Education Services
 
 ## Contact:
 
-    * [GitHub] (https://www.github.com/daveshouse44)
+* [GitHub] (https://www.github.com/daveshouse44)
 
-    * [LinkedIn] (https://www.linkedin.com/in/david-tierney-652030214/)
+* [LinkedIn] (https://www.linkedin.com/in/david-tierney-652030214/)
 
-    * [Email] (mailto:daveshouse44@hotmail.com)
+* [Email] (mailto:daveshouse44@hotmail.com)
