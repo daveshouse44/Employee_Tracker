@@ -121,8 +121,8 @@ Trilogy Education Services
 
 ## Contact:
 
-* [GitHub] (https://www.github.com/daveshouse44)
+* [GitHub](https://www.github.com/daveshouse44)
 
-* [LinkedIn] (https://www.linkedin.com/in/david-tierney-652030214/)
+* [LinkedIn](https://www.linkedin.com/in/david-tierney-652030214/)
 
-* [Email] (mailto:daveshouse44@hotmail.com)
+* [Email](daveshouse44@hotmail.com)
